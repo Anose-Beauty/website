@@ -99,9 +99,9 @@ export default function CartClient() {
                                 <div className="heading5">₹{cartTotal}</div>
                             </div>
 
-                            <button className="button-main w-full bg-purple-600 text-white py-4 rounded-xl mt-6 hover:bg-purple-700 duration-300">
+                            <Link href="/checkout" className="button-main w-full bg-purple-600 text-white py-4 rounded-xl mt-6 hover:bg-purple-700 duration-300 block text-center">
                                 Proceed To Checkout
-                            </button>
+                            </Link>
 
                             <Link href="/shop" className="text-button text-center block w-full mt-4 hover:underline">
                                 Continue Shopping

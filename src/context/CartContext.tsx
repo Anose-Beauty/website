@@ -21,12 +21,18 @@ interface CartContextType {
     clearCart: () => void;
     cartTotal: number;
     cartCount: number;
+    isPopupOpen: boolean;
+    closePopup: () => void;
+    lastAddedItem: CartItem | null;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [cart, setCart] = useState<CartItem[]>([]);
+
+    const [isPopupOpen, setIsPopupOpen] = useState(false);
+    const [lastAddedItem, setLastAddedItem] = useState<CartItem | null>(null);
 
     // Load from local storage
     useEffect(() => {
@@ -60,6 +66,8 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
             }
             return [...prev, newItem];
         });
+        setLastAddedItem(newItem);
+        setIsPopupOpen(true);
     };
 
     const removeFromCart = (id: string, size?: string, color?: string) => {
@@ -80,12 +88,13 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
 
     const clearCart = () => setCart([]);
+    const closePopup = () => setIsPopupOpen(false);
 
     const cartTotal = cart.reduce((total, item) => total + item.price * item.quantity, 0);
     const cartCount = cart.reduce((count, item) => count + item.quantity, 0);
 
     return (
-        <CartContext.Provider value={{ cart, addToCart, removeFromCart, updateQuantity, clearCart, cartTotal, cartCount }}>
+        <CartContext.Provider value={{ cart, addToCart, removeFromCart, updateQuantity, clearCart, cartTotal, cartCount, isPopupOpen, closePopup, lastAddedItem }}>
             {children}
         </CartContext.Provider>
     );

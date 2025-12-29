@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
@@ -33,11 +33,11 @@ model Product {
   sold            Int         @default(0)
   quantity        Int         @default(0)
   quantityPurchase Int        @default(1)
-  sizes           String?     // Stored as JSON string or comma-separated
-  description     String
+  sizes           String?     @db.Text
+  description     String      @db.Text
   slug            String      @unique
-  images          String      // Stored as JSON string of URLs
-  thumbImage      String      // Stored as JSON string of URLs
+  images          String      @db.LongText
+  thumbImage      String      @db.Text
   variations      Variation[]
   items           OrderItem[]
   createdAt       DateTime    @default(now())
@@ -47,11 +47,11 @@ model Product {
 model Variation {
   id         String  @id @default(cuid())
   productId  String
-  product    Product @relation(fields: [productId], references: [id])
+  product    Product @relation(fields: [productId], references: [id], onDelete: Cascade)
   color      String
   colorCode  String
-  colorImage String
-  image      String
+  colorImage String  @db.Text
+  image      String  @db.Text
 }
 
 model Order {
@@ -71,7 +71,7 @@ model OrderItem {
   orderId   String
   order     Order   @relation(fields: [orderId], references: [id])
   productId String
-  product   Product @relation(fields: [productId], references: [id])
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
   quantity  Int
   price     Float
 }

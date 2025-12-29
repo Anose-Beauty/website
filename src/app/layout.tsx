@@ -8,6 +8,7 @@ import Footer from "@/components/layout/Footer";
 import Marquee from "@/components/layout/Marquee";
 import AuthProvider from "@/components/layout/Provider";
 import Script from "next/script";
+import CartPopup from "@/components/CartPopup";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -46,6 +47,7 @@ export default function RootLayout({
               <Header />
               <Marquee />
               {children}
+              <CartPopup />
               <Footer />
               <Script src="/assets/js/phosphor-icons.js" strategy="beforeInteractive" />
             </WishlistProvider>
