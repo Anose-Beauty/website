@@ -27,7 +27,7 @@ export default function ContactPage() {
                     <div className="flex flex-wrap justify-between gap-y-10">
                         <div className="left lg:w-2/3 w-full lg:pr-10">
                             <h3 className="heading3 text-3xl font-bold">Drop Us A Line</h3>
-                            <p className="body1 text-zinc-500 mt-3">Use the form below to get in touch with the sales team</p>
+                            <p className="body1 text-zinc-500 mt-3">Use the form below to get in touch with our support team</p>
                             <form className="md:mt-10 mt-6 space-y-5">
                                 <div className="grid sm:grid-cols-2 grid-cols-1 gap-5">
                                     <div className="name">
@@ -64,17 +64,15 @@ export default function ContactPage() {
                         </div>
                         <div className="right lg:w-1/4 w-full">
                             <div className="item">
-                                <h4 className="heading4 font-bold text-xl uppercase">Our Store</h4>
-                                <p className="mt-4 text-zinc-600">2163 Phillips Gap Rd, West Jefferson, North Carolina, United States</p>
-                                <p className="mt-3 text-zinc-600">Phone: <span className="whitespace-nowrap font-bold text-black">+1 666 8888</span></p>
-                                <p className="mt-1 text-zinc-600">Email: <span className="whitespace-nowrap font-bold text-black">hi.avitex@gmail.com</span></p>
+                                <h4 className="heading4 font-bold text-xl uppercase">Our Office</h4>
+                                <p className="mt-4 text-zinc-600">Anose Beauty, B-103, Sector 6, Noida, Uttar Pradesh, India (201301)</p>
+                                <p className="mt-3 text-zinc-600">Phone: <span className="whitespace-nowrap font-bold text-black">+91 9110134408</span></p>
+                                <p className="mt-1 text-zinc-600">Email: <span className="whitespace-nowrap font-bold text-black">wecare@anosebeauty.com</span></p>
                             </div>
                             <div className="item mt-12 pt-10 border-t border-line">
                                 <h4 className="heading4 font-bold text-xl uppercase">Open Hours</h4>
                                 <div className="mt-4 space-y-2">
-                                    <p className="text-zinc-600 flex justify-between"><span>Mon - Fri:</span> <span className="font-semibold text-black text-right">7:30am - 8:00pm PST</span></p>
-                                    <p className="text-zinc-600 flex justify-between"><span>Saturday:</span> <span className="font-semibold text-black text-right">8:00am - 6:00pm PST</span></p>
-                                    <p className="text-zinc-600 flex justify-between"><span>Sunday:</span> <span className="font-semibold text-black text-right">9:00am - 5:00pm PST</span></p>
+                                    <p className="text-zinc-600 flex justify-between"><span>Mon - Sat:</span> <span className="font-semibold text-black text-right">10:30am - 6:30pm</span></p>
                                 </div>
                             </div>
                         </div>
@@ -85,7 +83,7 @@ export default function ContactPage() {
             <div className="map h-[500px] w-full mt-10 grayscale hover:grayscale-0 transition-all duration-700 overflow-hidden rounded-3xl container mx-auto mb-20">
                 <iframe
                     className="w-full h-full border-0"
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1087.1466107534056!2d-81.49247136581288!3d36.40281150719292!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8851ac9789084bdd%3A0x854168300ff0fb4b!2sDr%20Pepper.Grapette%20Bottling%20Co.!5e1!3m2!1svi!2s!4v1721783628866!5m2!1svi!2s"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3170.240597783484!2d77.31428137495531!3d28.59287918588118!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390ce5a2cd82c419%3A0xbe5b9b558f7c8768!2sAnose%20Beauty%20Private%20Limited!5e1!3m2!1sen!2sin!4v1767169795088!5m2!1sen!2sin"
                     allowFullScreen
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"

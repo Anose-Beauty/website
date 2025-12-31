@@ -21,9 +21,10 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Anose - Premium Hotel Amenities",
-  description: "High-quality hotel amenities supplier.",
+  title: "Anose - Premium Cosmetics",
+  description: "High-quality Cosmtic Manufactrer and hotel amenities supplier.",
 };
+
 
 export default function RootLayout({
   children,

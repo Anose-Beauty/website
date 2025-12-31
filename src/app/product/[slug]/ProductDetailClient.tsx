@@ -164,7 +164,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
                                 >+</div>
                             </div>
                             <button
-                                className="button-main flex-1 bg-purple-600 text-white py-4 rounded-xl hover:bg-purple-700 duration-300 font-bold uppercase transition-colors"
+                                className="button-main flex-1 bg-black text-white py-4 rounded-xl hover:bg-purple text-white duration-300 font-bold uppercase transition-colors"
                                 onClick={handleAddToCart}
                             >
                                 Add To Cart

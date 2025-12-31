@@ -8,7 +8,7 @@ export default function Footer() {
                     <div className="footer-item basis-1/4 max-lg:basis-1/2 max-sm:basis-full pr-10">
                         <Link href="/" className="logo text-3xl font-semibold">Anose</Link>
                         <div className="caption1 text-secondary mt-5">
-                            Anose is a premium hotel amenities supplier, dedicated to providing high-quality products that enhance the guest experience.
+                            Anose is a premium cosmetic manufacturer and hotel amenities supplier, dedicated to providing high-quality products.
                         </div>
                         <div className="list-social flex items-center gap-4 mt-5">
                             <Link href="https://www.facebook.com/" target="_blank">
@@ -43,7 +43,7 @@ export default function Footer() {
                                 <Link href="/faqs" className="caption1 text-secondary hover:text-black duration-300">FAQs</Link>
                             </li>
                             <li className="mt-2">
-                                <Link href="/shipping-returns" className="caption1 text-secondary hover:text-black duration-300">Shipping & Returns</Link>
+                                <Link href="/shipping-returns" className="caption1 text-secondary hover:text-black duration-300">Shipping & Return Policy</Link>
                             </li>
                             <li className="mt-2">
                                 <Link href="/privacy-policy" className="caption1 text-secondary hover:text-black duration-300">Privacy Policy</Link>

@@ -20,7 +20,16 @@ interface ProductProps {
 export default function ProductCard({ product }: ProductProps) {
     const { addToCart } = useCart();
     const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
-    const thumbImages = JSON.parse(product.thumbImage);
+    let imageUrl = product.thumbImage;
+    try {
+        if (product.thumbImage.startsWith('[') || product.thumbImage.startsWith('{') || product.thumbImage.startsWith('"')) {
+            const parsed = JSON.parse(product.thumbImage);
+            imageUrl = Array.isArray(parsed) ? parsed[0] : parsed;
+        }
+    } catch (e) {
+        // Keep original string if parse fails
+        imageUrl = product.thumbImage;
+    }
 
     const handleAddToCart = (e: React.MouseEvent) => {
         e.preventDefault();
@@ -29,7 +38,7 @@ export default function ProductCard({ product }: ProductProps) {
             id: product.id,
             name: product.name,
             price: product.price,
-            image: thumbImages[0],
+            image: imageUrl,
             quantity: 1,
             slug: product.slug
         });
@@ -45,7 +54,7 @@ export default function ProductCard({ product }: ProductProps) {
                 id: product.id,
                 name: product.name,
                 price: product.price,
-                image: thumbImages[0],
+                image: imageUrl,
                 slug: product.slug
             });
         }
@@ -56,7 +65,7 @@ export default function ProductCard({ product }: ProductProps) {
             <div className="relative aspect-[3/4] rounded-xl overflow-hidden">
                 <Link href={`/product/${product.slug}`} className="block h-full w-full">
                     <Image
-                        src={thumbImages[0]}
+                        src={imageUrl}
                         alt={product.name}
                         fill
                         className="object-cover transition-transform duration-500 group-hover:scale-110"
@@ -75,7 +84,7 @@ export default function ProductCard({ product }: ProductProps) {
 
                 <div className="absolute bottom-3 left-3 right-3 translate-y-10 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 duration-300">
                     <button
-                        className="w-full bg-white text-purple-600 py-2 rounded-full text-sm font-bold shadow-md hover:bg-purple-600 hover:text-white duration-300 uppercase border border-purple-600"
+                        className="w-full bg-white text-purple-600 py-2 rounded-full text-sm font-bold shadow-md hover:bg-black hover:text-white duration-300 uppercase border border-purple-600"
                         onClick={handleAddToCart}
                     >
                         Add To Cart

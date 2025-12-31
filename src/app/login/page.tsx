@@ -1,12 +1,15 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, Suspense } from 'react';
 import Link from 'next/link';
 import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
-export default function LoginPage() {
+function LoginForm() {
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const callbackUrl = searchParams.get('callbackUrl') || '/my-account';
+
     const [formData, setFormData] = useState({
         email: '',
         password: '',
@@ -20,21 +23,32 @@ export default function LoginPage() {
         setLoading(true);
 
         try {
+            console.log('Attempting login with callbackUrl:', callbackUrl);
+
             const res = await signIn('credentials', {
                 email: formData.email,
                 password: formData.password,
                 redirect: false,
             });
 
+            console.log('Sign in response:', res);
+
             if (res?.error) {
+                console.error('Login error:', res.error);
                 setError('Invalid email or password');
+                setLoading(false);
+            } else if (res?.ok) {
+                console.log('Login successful, redirecting to:', callbackUrl);
+                // Force a full page reload to ensure session is loaded
+                window.location.href = callbackUrl;
             } else {
-                router.push('/my-account');
-                router.refresh();
+                console.error('Unexpected response:', res);
+                setError('Something went wrong');
+                setLoading(false);
             }
         } catch (err) {
+            console.error('Login exception:', err);
             setError('Something went wrong');
-        } finally {
             setLoading(false);
         }
     };
@@ -81,8 +95,9 @@ export default function LoginPage() {
                             </div>
 
                             <button
-                                className="button-main w-full bg-purple-600 text-white py-4 rounded-xl hover:bg-purple-700 duration-300 font-bold uppercase disabled:bg-purple-400"
+                                className="button-main w-full bg-black text-white py-4 rounded-xl hover:bg-purple-700 duration-300 font-bold uppercase disabled:bg-purple-400"
                                 disabled={loading}
+                                type="submit"
                             >
                                 {loading ? 'Logging in...' : 'Login'}
                             </button>
@@ -96,5 +111,23 @@ export default function LoginPage() {
                 </div>
             </div>
         </div>
+    );
+}
+
+export default function LoginPage() {
+    return (
+        <Suspense fallback={
+            <div className="login-block md:py-20 py-10">
+                <div className="container mx-auto">
+                    <div className="content-main flex flex-col items-center">
+                        <div className="md:w-1/2 w-full max-w-[500px]">
+                            <div className="heading4 text-center">Loading...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }>
+            <LoginForm />
+        </Suspense>
     );
 }

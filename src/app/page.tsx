@@ -30,7 +30,7 @@ export default async function Home() {
           <div className="relative h-full w-full">
             <div className="container mx-auto h-full flex items-center">
               <div className="text-content sm:w-1/2 w-2/3 z-10">
-                <div className="text-sub-display">Sale! Up To 50% Off!</div>
+                <div className="text-sub-display">Sale! Flat 50% Off!</div>
                 <div className="text-display md:mt-5 mt-2">Elevate Your Beauty with Our Skin Care Gems</div>
                 <div className="body1 mt-4 text-secondary">Check out our latest collection of skincare and haircare products to look confident and beautiful all year round.</div>
                 <Link href="/shop" className="button-main md:mt-8 mt-3 inline-block bg-purple-600 text-white px-8 py-3 rounded-lg hover:bg-purple-700 duration-300 shadow-md"> Shop Now</Link>

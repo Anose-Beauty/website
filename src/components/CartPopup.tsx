@@ -1,12 +1,36 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useCart } from '@/context/CartContext';
 
 export default function CartPopup() {
     const { isPopupOpen, closePopup, lastAddedItem } = useCart();
+    const [recommended, setRecommended] = useState<any[]>([]);
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        if (isPopupOpen && lastAddedItem) {
+            setLoading(true);
+            const fetchProducts = async () => {
+                try {
+                    const res = await fetch('/api/admin/products?limit=20');
+                    const data = await res.json();
+                    if (data.products) {
+                        const others = data.products.filter((p: any) => p.id !== lastAddedItem.id);
+                        const shuffled = others.sort(() => 0.5 - Math.random());
+                        setRecommended(shuffled.slice(0, 2));
+                    }
+                } catch (e) {
+                    console.error("Failed to load recommendations", e);
+                } finally {
+                    setLoading(false);
+                }
+            };
+            fetchProducts();
+        }
+    }, [isPopupOpen, lastAddedItem]);
 
     if (!isPopupOpen || !lastAddedItem) return null;
 
@@ -14,7 +38,7 @@ export default function CartPopup() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <div className="absolute inset-0 bg-black/50" onClick={closePopup}></div>
             <div className="relative bg-white rounded-2xl p-6 w-full max-w-2xl shadow-xl animate-fade-up">
-                <button 
+                <button
                     onClick={closePopup}
                     className="absolute top-4 right-4 p-2 hover:bg-zinc-100 rounded-full duration-300"
                 >
@@ -28,11 +52,11 @@ export default function CartPopup() {
 
                 <div className="flex gap-6 border-b border-line pb-6">
                     <div className="w-24 aspect-[3/4] relative rounded-lg overflow-hidden flex-shrink-0 bg-zinc-100">
-                        <Image 
-                            src={lastAddedItem.image} 
-                            alt={lastAddedItem.name} 
-                            fill 
-                            className="object-cover" 
+                        <Image
+                            src={lastAddedItem.image}
+                            alt={lastAddedItem.name}
+                            fill
+                            className="object-cover"
                         />
                     </div>
                     <div>
@@ -52,51 +76,60 @@ export default function CartPopup() {
                 <div className="mt-6">
                     <div className="heading6 mb-4">You might also like</div>
                     <div className="grid grid-cols-2 gap-4">
-                         {/* Mock Recommended Products - In a real app this would fetch based on category */}
-                        <div className="flex gap-3 p-3 border border-line rounded-lg hover:border-black duration-300 cursor-pointer group">
-                             <div className="w-16 aspect-square relative rounded bg-zinc-100 overflow-hidden flex-shrink-0">
-                                <Image 
-                                    src="https://images.unsplash.com/photo-1620916566398-39f1143ab7be?q=80&w=1887&auto=format&fit=crop"
-                                    alt="Recommended 1"
-                                    fill
-                                    className="object-cover group-hover:scale-110 duration-500"
-                                />
-                             </div>
-                             <div>
-                                <div className="font-bold line-clamp-1 text-sm">Hydrating Serum</div>
-                                <div className="text-xs text-secondary mt-1">₹1,299</div>
-                             </div>
-                        </div>
-                        <div className="flex gap-3 p-3 border border-line rounded-lg hover:border-black duration-300 cursor-pointer group">
-                             <div className="w-16 aspect-square relative rounded bg-zinc-100 overflow-hidden flex-shrink-0">
-                                <Image 
-                                    src="https://images.unsplash.com/photo-1608248597279-f99d160bfbc8?q=80&w=1926&auto=format&fit=crop"
-                                    alt="Recommended 2"
-                                    fill
-                                    className="object-cover group-hover:scale-110 duration-500"
-                                />
-                             </div>
-                             <div>
-                                <div className="font-bold line-clamp-1 text-sm">Face Mist</div>
-                                <div className="text-xs text-secondary mt-1">₹899</div>
-                             </div>
-                        </div>
+                        {loading ? (
+                            <div className="col-span-2 text-center text-sm text-secondary">Loading suggestions...</div>
+                        ) : recommended.length > 0 ? (
+                            recommended.map((product) => (
+                                <Link
+                                    key={product.id}
+                                    href={`/shop/product/${product.slug}`}
+                                    onClick={closePopup}
+                                    className="flex gap-3 p-3 border border-line rounded-lg hover:border-black duration-300 cursor-pointer group"
+                                >
+                                    <div className="w-16 aspect-square relative rounded bg-zinc-100 overflow-hidden flex-shrink-0">
+                                        <Image
+                                            src={product.thumbImage || (product.images ? product.images.split(',')[0] : '/assets/images/placeholder.png')}
+                                            alt={product.name}
+                                            fill
+                                            className="object-cover group-hover:scale-110 duration-500"
+                                        />
+                                    </div>
+                                    <div className="flex flex-col justify-center min-w-0">
+                                        <div className="font-bold line-clamp-1 text-sm">{product.name}</div>
+                                        <div className="text-xs text-secondary mt-1">₹{product.price}</div>
+                                    </div>
+                                </Link>
+                            ))
+                        ) : (
+                            <div className="col-span-2 text-center text-sm text-secondary">No other products found.</div>
+                        )}
                     </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4 mt-8">
-                    <button 
+                    <button
                         onClick={closePopup}
                         className="button-main border border-black bg-white text-black py-3 rounded-xl hover:bg-black hover:text-white duration-300 font-bold"
                     >
                         Continue Shopping
                     </button>
-                    <Link 
-                        href="/checkout" 
+                    <Link
+                        href="/checkout"
                         onClick={closePopup}
-                        className="button-main bg-purple-600 text-white py-3 rounded-xl hover:bg-purple-700 duration-300 font-bold text-center flex items-center justify-center"
+                        className="button-main bg-purple-600 text-white py-3 rounded-xl hover:bg-purple-700 duration-300 font-bold text-center flex flex-col items-center justify-center gap-1"
                     >
-                        Continue To Checkout
+                        <span>Continue To Checkout</span>
+                        <div className="flex items-center gap-1.5 opacity-90">
+                            <div className="h-4 w-auto bg-white rounded px-1 flex items-center justify-center">
+                                <Image src="/assets/images/payment_methods/upi.webp" alt="UPI" width={24} height={12} className="w-auto h-3 object-contain" />
+                            </div>
+                            <div className="h-4 w-auto bg-white rounded px-1 flex items-center justify-center">
+                                <Image src="/assets/images/payment_methods/rupay.png" alt="Rupay" width={24} height={12} className="w-auto h-3 object-contain" />
+                            </div>
+                            <div className="h-4 w-auto bg-white rounded px-1 flex items-center justify-center">
+                                <Image src="/assets/images/payment_methods/visa.png" alt="Visa" width={24} height={12} className="w-auto h-3 object-contain" />
+                            </div>
+                        </div>
                     </Link>
                 </div>
             </div>

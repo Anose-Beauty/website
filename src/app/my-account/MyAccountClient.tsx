@@ -13,119 +13,179 @@ export default function MyAccountClient({ user }: MyAccountClientProps) {
 
     const tabs = [
         { id: 'dashboard', label: 'Dashboard', icon: 'ph-house-line' },
-        { id: 'orders', label: 'History Orders', icon: 'ph-package' },
-        { id: 'address', label: 'My Address', icon: 'ph-tag' },
-        { id: 'setting', label: 'Setting', icon: 'ph-gear-six' },
+        { id: 'orders', label: 'Order History', icon: 'ph-package' },
+        { id: 'address', label: 'Addresses', icon: 'ph-map-pin' },
+        { id: 'setting', label: 'Settings', icon: 'ph-gear-six' },
     ];
 
     return (
-        <div className="my-account-block md:py-20 py-10">
-            <div className="container mx-auto">
-                <div className="content-main lg:px-[60px] md:px-4 flex gap-y-8 max-md:flex-col w-full">
+        <div className="my-account-section relative w-full bg-white">
+            {/* Breadcrumb */}
+            <div className="breadcrumb-block py-6 bg-zinc-50 border-b border-zinc-100">
+                <div className="container mx-auto px-4">
+                    <div className="flex items-center gap-2 text-sm text-zinc-500">
+                        <Link href="/" className="hover:text-purple-600 transition-colors">Home</Link>
+                        <span>/</span>
+                        <span className="text-zinc-900 font-medium">My Account</span>
+                    </div>
+                    <div className="heading3 mt-2 font-bold text-2xl">My Account</div>
+                </div>
+            </div>
+
+            <div className="container mx-auto px-4 py-10 lg:py-16">
+                <div className="flex flex-col md:flex-row gap-8 lg:gap-12">
+
                     {/* Left Sidebar */}
-                    <div className="left md:w-1/3 w-full xl:pr-[3.125rem] lg:pr-[28px] md:pr-[16px]">
-                        <div className="user-infor bg-surface md:px-8 px-5 md:py-10 py-6 md:rounded-[20px] rounded-xl bg-zinc-50 border border-zinc-100">
-                            <div className="heading flex flex-col items-center justify-center">
-                                <div className="avatar">
-                                    <div className="md:w-[140px] w-[120px] md:h-[140px] h-[120px] rounded-full bg-zinc-200 flex items-center justify-center text-4xl font-bold text-zinc-500 capitalize">
-                                        {user?.name?.[0] || 'U'}
-                                    </div>
+                    <div className="w-full md:w-1/3 lg:w-1/4">
+                        <div className="user-card bg-white p-6 rounded-2xl border border-zinc-100 shadow-sm">
+                            <div className="flex flex-col items-center">
+                                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center text-4xl font-bold text-white shadow-lg mb-4">
+                                    {user?.name?.[0]?.toUpperCase() || 'U'}
                                 </div>
-                                <div className="name heading6 mt-4 text-center font-bold">{user?.name}</div>
-                                <div className="mail heading6 font-normal normal-case text-secondary text-center mt-1 text-zinc-500">{user?.email}</div>
+                                <h3 className="text-xl font-bold text-zinc-900">{user?.name}</h3>
+                                <p className="text-zinc-500 text-sm mt-1">{user?.email}</p>
                             </div>
-                            <div className="menu-tab list-category w-full max-w-none lg:mt-10 mt-6">
+
+                            <div className="mt-8 flex flex-col gap-2">
                                 {tabs.map((tab) => (
                                     <button
                                         key={tab.id}
                                         onClick={() => setActiveTab(tab.id)}
-                                        className={`category-item flex items-center gap-3 w-full px-5 py-4 rounded-lg cursor-pointer duration-300 mb-1.5 ${activeTab === tab.id ? 'bg-purple-600 text-white' : 'hover:bg-white text-zinc-600'
+                                        className={`flex items-center gap-3 px-5 py-3.5 rounded-xl text-base font-medium transition-all duration-300 w-full text-left
+                                            ${activeTab === tab.id
+                                                ? 'bg-purple-600 text-white shadow-md'
+                                                : 'text-zinc-600 hover:bg-zinc-50 hover:text-purple-600'
                                             }`}
                                     >
                                         <i className={`ph ${tab.icon} text-xl`}></i>
-                                        <strong className="heading6 font-semibold">{tab.label}</strong>
+                                        {tab.label}
                                     </button>
                                 ))}
                                 <button
-                                    onClick={() => signOut()}
-                                    className="category-item flex items-center gap-3 w-full px-5 py-4 rounded-lg cursor-pointer duration-300 hover:bg-white mt-1.5 text-red-500"
+                                    onClick={() => signOut({ callbackUrl: '/' })}
+                                    className="flex items-center gap-3 px-5 py-3.5 rounded-xl text-base font-medium transition-all duration-300 w-full text-left text-red-500 hover:bg-red-50"
                                 >
                                     <i className="ph ph-sign-out text-xl"></i>
-                                    <strong className="heading6 font-semibold">Logout</strong>
+                                    Logout
                                 </button>
                             </div>
                         </div>
                     </div>
 
                     {/* Right Content */}
-                    <div className="right md:w-2/3 w-full pl-2.5">
+                    <div className="w-full md:w-2/3 lg:w-3/4">
+
+                        {/* Dashboard Tab */}
                         {activeTab === 'dashboard' && (
-                            <div className="filter-item text-content w-full">
-                                <div className="overview grid sm:grid-cols-3 gap-5">
-                                    <div className="overview-item flex items-center justify-between p-5 border border-line rounded-lg shadow-sm">
-                                        <div className="counter">
-                                            <span className="text-secondary text-sm">Awaiting Pickup</span>
-                                            <h5 className="heading5 mt-1 font-bold">0</h5>
-                                        </div>
-                                        <i className="ph ph-hourglass-medium text-4xl text-zinc-300"></i>
-                                    </div>
-                                    <div className="overview-item flex items-center justify-between p-5 border border-line rounded-lg shadow-sm">
-                                        <div className="counter">
-                                            <span className="text-secondary text-sm">Cancelled Orders</span>
-                                            <h5 className="heading5 mt-1 font-bold">0</h5>
-                                        </div>
-                                        <i className="ph ph-receipt-x text-4xl text-zinc-300"></i>
-                                    </div>
-                                    <div className="overview-item flex items-center justify-between p-5 border border-line rounded-lg shadow-sm">
-                                        <div className="counter">
-                                            <span className="text-secondary text-sm">Total Orders</span>
-                                            <h5 className="heading5 mt-1 font-bold">0</h5>
-                                        </div>
-                                        <i className="ph ph-package text-4xl text-zinc-300"></i>
-                                    </div>
+                            <div className="space-y-6 animate-fade-in">
+                                <div className="heading flex items-center justify-between">
+                                    <h4 className="text-2xl font-bold text-zinc-900">Dashboard</h4>
                                 </div>
-                                <div className="recent_order pt-5 px-5 pb-2 mt-7 border border-line rounded-xl">
-                                    <h6 className="heading6 font-bold mb-4">Recent Orders</h6>
-                                    <div className="text-center py-10 text-zinc-400">
-                                        <p>You have no recent orders.</p>
-                                        <Link href="/shop" className="text-black font-bold underline mt-2 inline-block">Start Shopping</Link>
+
+                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                                    {[
+                                        { label: 'Total Orders', value: '0', icon: 'ph-shopping-bag', color: 'text-purple-600', bg: 'bg-purple-50' },
+                                        { label: 'Pending', value: '0', icon: 'ph-clock', color: 'text-orange-600', bg: 'bg-orange-50' },
+                                        { label: 'Completed', value: '0', icon: 'ph-check-circle', color: 'text-green-600', bg: 'bg-green-50' }
+                                    ].map((stat, idx) => (
+                                        <div key={idx} className="p-6 rounded-2xl border border-zinc-100 bg-white shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300">
+                                            <div className="flex items-center justify-between mb-4">
+                                                <div className={`p-3 rounded-xl ${stat.bg} ${stat.color}`}>
+                                                    <i className={`ph-bold ${stat.icon} text-2xl`}></i>
+                                                </div>
+                                                <span className="text-3xl font-bold text-zinc-900">{stat.value}</span>
+                                            </div>
+                                            <p className="text-zinc-500 font-medium">{stat.label}</p>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                <div className="recent-orders bg-white rounded-2xl border border-zinc-100 shadow-sm p-8 text-center mt-8">
+                                    <div className="w-16 h-16 bg-zinc-50 rounded-full flex items-center justify-center mx-auto mb-4 text-zinc-300">
+                                        <i className="ph ph-shopping-cart text-3xl"></i>
                                     </div>
+                                    <h5 className="text-lg font-bold text-zinc-900">No Recent Orders</h5>
+                                    <p className="text-zinc-500 mt-2 mb-6">Looks like you haven't placed any orders yet.</p>
+                                    <Link href="/shop" className="inline-flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 rounded-full font-bold transition-all transform hover:scale-105">
+                                        Start Shopping
+                                    </Link>
                                 </div>
                             </div>
                         )}
 
+                        {/* Orders Tab */}
                         {activeTab === 'orders' && (
-                            <div className="filter-item text-content w-full p-7 border border-line rounded-xl">
-                                <h6 className="heading6 font-bold mb-4">Order History</h6>
-                                <div className="text-center py-10 text-zinc-400">
-                                    <p>No orders found.</p>
+                            <div className="space-y-6 animate-fade-in">
+                                <h4 className="text-2xl font-bold text-zinc-900">Order History</h4>
+                                <div className="bg-white rounded-2xl border border-zinc-100 shadow-sm p-12 text-center">
+                                    <div className="w-20 h-20 bg-zinc-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                                        <i className="ph ph-receipt text-4xl text-zinc-300"></i>
+                                    </div>
+                                    <h5 className="text-lg font-bold text-zinc-900">No Orders Found</h5>
+                                    <p className="text-zinc-500 mt-2">You haven't placed any orders yet.</p>
                                 </div>
                             </div>
                         )}
 
+                        {/* Address Tab */}
                         {activeTab === 'address' && (
-                            <div className="filter-item text-content w-full p-7 border border-line rounded-xl">
-                                <h6 className="heading6 font-bold mb-4">Saved Addresses</h6>
-                                <div className="text-center py-10 text-zinc-400">
-                                    <p>You haven't saved any addresses yet.</p>
+                            <div className="space-y-6 animate-fade-in">
+                                <div className="flex items-center justify-between">
+                                    <h4 className="text-2xl font-bold text-zinc-900">My Addresses</h4>
+                                    <button className="text-purple-600 font-bold hover:underline flex items-center gap-1">
+                                        <i className="ph-bold ph-plus"></i> Add New
+                                    </button>
+                                </div>
+                                <div className="bg-white rounded-2xl border border-zinc-100 shadow-sm p-12 text-center border-dashed border-2">
+                                    <div className="w-20 h-20 bg-zinc-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                                        <i className="ph ph-map-pin text-4xl text-zinc-300"></i>
+                                    </div>
+                                    <h5 className="text-lg font-bold text-zinc-900">No Addresses Saved</h5>
+                                    <p className="text-zinc-500 mt-2">Add an address for a faster checkout.</p>
                                 </div>
                             </div>
                         )}
 
+                        {/* Settings Tab */}
                         {activeTab === 'setting' && (
-                            <div className="filter-item text-content w-full p-7 border border-line rounded-xl">
-                                <h6 className="heading6 font-bold mb-4">Account Settings</h6>
-                                <form className="space-y-4">
-                                    <div>
-                                        <label className="block text-sm font-medium text-zinc-700">Display Name</label>
-                                        <input type="text" defaultValue={user?.name} className="mt-1 block w-full border border-zinc-200 rounded-lg p-2" />
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-zinc-700">Email Address</label>
-                                        <input type="email" defaultValue={user?.email} className="mt-1 block w-full border border-zinc-200 rounded-lg p-2" disabled />
-                                    </div>
-                                    <button className="button-main bg-purple-600 text-white px-6 py-2 rounded-lg font-bold">Save Changes</button>
-                                </form>
+                            <div className="space-y-6 animate-fade-in">
+                                <h4 className="text-2xl font-bold text-zinc-900">Account Settings</h4>
+                                <div className="bg-white rounded-2xl border border-zinc-100 shadow-sm p-8">
+                                    <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+                                        <div className="grid gap-6 md:grid-cols-2">
+                                            <div className="space-y-2">
+                                                <label className="text-sm font-bold text-zinc-900">Full Name</label>
+                                                <div className="relative">
+                                                    <i className="ph ph-user absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400 text-lg"></i>
+                                                    <input
+                                                        type="text"
+                                                        defaultValue={user?.name}
+                                                        className="w-full pl-11 pr-4 py-3 rounded-xl border border-zinc-200 focus:border-purple-600 focus:ring-1 focus:ring-purple-600 outline-none transition-all"
+                                                        placeholder="Your Name"
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className="space-y-2">
+                                                <label className="text-sm font-bold text-zinc-900">Email Address</label>
+                                                <div className="relative">
+                                                    <i className="ph ph-envelope absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400 text-lg"></i>
+                                                    <input
+                                                        type="email"
+                                                        defaultValue={user?.email}
+                                                        className="w-full pl-11 pr-4 py-3 rounded-xl border border-zinc-200 bg-zinc-50 text-zinc-500 cursor-not-allowed outline-none"
+                                                        disabled
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="pt-4">
+                                            <button className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 rounded-xl font-bold transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+                                                Save Changes
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
                         )}
                     </div>

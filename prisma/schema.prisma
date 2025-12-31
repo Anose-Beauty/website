@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
@@ -33,11 +33,11 @@ model Product {
   sold            Int         @default(0)
   quantity        Int         @default(0)
   quantityPurchase Int        @default(1)
-  sizes           String?     @db.Text
-  description     String      @db.Text
+  sizes           String?
+  description     String
   slug            String      @unique
-  images          String      @db.LongText
-  thumbImage      String      @db.Text
+  images          String
+  thumbImage      String
   variations      Variation[]
   items           OrderItem[]
   createdAt       DateTime    @default(now())
@@ -50,8 +50,8 @@ model Variation {
   product    Product @relation(fields: [productId], references: [id], onDelete: Cascade)
   color      String
   colorCode  String
-  colorImage String  @db.Text
-  image      String  @db.Text
+  colorImage String
+  image      String
 }
 
 model Order {
@@ -61,6 +61,8 @@ model Order {
   items       OrderItem[]
   total       Float
   status      String      @default("PENDING")
+  paymentStatus String    @default("PENDING")
+  paymentMethod String    @default("ONLINE")
   address     String?
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
@@ -69,9 +71,24 @@ model Order {
 model OrderItem {
   id        String  @id @default(cuid())
   orderId   String
-  order     Order   @relation(fields: [orderId], references: [id])
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
   productId String
   product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
   quantity  Int
   price     Float
+}
+
+model PromoCode {
+  id            String    @id @default(cuid())
+  code          String    @unique
+  discountType  String    @default("PERCENTAGE") // PERCENTAGE, FIXED
+  discountValue Float
+  minOrderValue Float?    @default(0)
+  maxDiscount   Float?
+  usageLimit    Int?
+  usedCount     Int       @default(0)
+  expiresAt     DateTime?
+  isActive      Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 }

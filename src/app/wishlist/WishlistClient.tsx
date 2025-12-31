@@ -55,7 +55,7 @@ export default function WishlistClient() {
                                     </div>
                                     <div className="absolute bottom-4 left-4 right-4 translate-y-10 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 duration-300 transition-all">
                                         <button
-                                            className="button-main w-full bg-white text-black py-2 rounded-full text-sm font-semibold hover:bg-purple-600 hover:text-white"
+                                            className="button-main w-full bg-white text-black py-2 rounded-full text-sm font-semibold hover:bg-black hover:text-white"
                                             onClick={() => handleAddToCart(item)}
                                         >
                                             Add To Cart

@@ -63,7 +63,9 @@ export default function Header() {
                             <div className="list-action flex items-center gap-4">
                                 {/* User Icon with Dropdown */}
                                 <div className="user-icon flex items-center justify-center cursor-pointer relative group">
-                                    <i className="ph-bold ph-user text-2xl"></i>
+                                    <Link href="/my-account" className="flex items-center justify-center">
+                                        <i className="ph-bold ph-user text-2xl"></i>
+                                    </Link>
                                     <div className="login-popup absolute top-[50px] right-0 w-[320px] p-7 rounded-xl bg-white shadow-lg opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-300 z-[100]">
                                         {session ? (
                                             <>

@@ -20,7 +20,7 @@ type ProductTabsProps = {
 };
 
 export default function ProductTabs({ bestSellers, onSale, newArrivals }: ProductTabsProps) {
-    const [activeTab, setActiveTab] = useState<'best-sellers' | 'on-sale' | 'new-arrivals'>('best-sellers');
+    const [activeTab, setActiveTab] = useState<'best-sellers' | 'on-sale' | 'new-arrivals'>('on-sale');
 
     const tabs = [
         { id: 'best-sellers', label: 'Best Sellers', products: bestSellers },
